@@ -6,7 +6,8 @@ let
     inherit config;
   })
     secretFileDeclaration;
-  strings = lib.strings;
+  trim = s: builtins.replaceStrings [" "] [""]
+    (builtins.replaceStrings ["\n"] [""] s); # Simulate trimming by replacing spaces/newlines
   cfg = config.opnix;
   scripts = import ./scripts.nix {
     inherit lib;
@@ -33,7 +34,7 @@ in {
     };
     secretsMountPoint = mkOption {
       type = types.addCheck types.str (s:
-        (strings.trim s) != "" # non-empty
+        (trim s) != "" # non-empty
         && (builtins.match ".+/" s) == null) # without trailing slash
         // {
           description =
