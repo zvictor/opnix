@@ -6,6 +6,7 @@ let
     inherit config;
   })
     secretFileDeclaration;
+  strings = lib.strings;
   cfg = config.opnix;
   scripts = import ./scripts.nix {
     inherit lib;
@@ -32,7 +33,7 @@ in {
     };
     secretsMountPoint = mkOption {
       type = types.addCheck types.str (s:
-        (lib.strings.trim s) != "" # non-empty
+        (strings.trim s) != "" # non-empty
         && (builtins.match ".+/" s) == null) # without trailing slash
         // {
           description =
