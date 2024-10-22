@@ -32,7 +32,7 @@ in {
     };
     secretsMountPoint = mkOption {
       type = types.addCheck types.str (s:
-        (trim s) != "" # non-empty
+        (lib.trim s) != "" # non-empty
         && (builtins.match ".+/" s) == null) # without trailing slash
         // {
           description =
